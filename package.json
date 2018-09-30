@@ -1,0 +1,28 @@
+{
+  "name": "@unplgtc/standard-promise",
+  "version": "0.0.0",
+  "description": "Standardize Node Promise return values",
+  "main": "src/StandardPromise.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unplgtc/StandardPromise.git"
+  },
+  "author": "Alex Guyot <guyot@unapologetic.io> (https://unapologetic.io)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unplgtc/StandardPromise/issues"
+  },
+  "homepage": "https://github.com/unplgtc/StandardPromise#readme",
+  "devDependencies": {
+    "jest": "^23.4.2"
+  },
+  "dependencies": {
+    "@unplgtc/cblogger": "0.0.1",
+    "@unplgtc/standard-error": "0.0.1",
+    "request": "^2.87.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
