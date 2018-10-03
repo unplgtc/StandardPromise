@@ -7,7 +7,7 @@ const CBLogger = require('@unplgtc/cblogger');
 test('Resolving a StandardPromise stores value in data attribute', async() => {
 	// Setup
 	var p = new Promise(async(resolve, reject) => {
-		setTimeout(() => {resolve('testing')}, 5);
+		setTimeout(() => {resolve('testing')}, 1);
 	});
 
 	// Execute
@@ -21,7 +21,7 @@ test('Resolving a StandardPromise stores value in data attribute', async() => {
 test('Rejecting a StandardPromise stores value in err attribute', async() => {
 	// Setup
 	var p = new Promise(async(resolve, reject) => {
-		setTimeout(() => {reject('testing')}, 5);
+		setTimeout(() => {reject('testing')}, 1);
 	});
 
 	// Execute
@@ -35,18 +35,22 @@ test('Rejecting a StandardPromise stores value in err attribute', async() => {
 test('Passing a StandardPromise into another StandardPromise returns the original StandardPromise without nesting', async() => {
 	// Setup
 	var p = new Promise(async(resolve, reject) => {
-		setTimeout(() => {resolve('testing')}, 5);
+		setTimeout(() => {resolve('testing')}, 1);
 	});
 	var p2 = new Promise(async(resolve, reject) => {
-		setTimeout(() => {resolve('testing')}, 5);
+		setTimeout(() => {resolve('testing')}, 1);
+	});
+	var p3 = new Promise(async(resolve, reject) => {
+		setTimeout(() => {resolve('testing')}, 1);
 	});
 
 	// Execute
 	var sp = await _( await _(p) );
+	var sp2 = await _( _(p) );
 
-	var sp2 = await _(p2);
-	var sp3 = await _(sp2);
+	var sp3 = await _(p3);
 	var sp4 = await _(sp3);
+	var sp5 = _(sp4);
 
 	// Test
 	expect(sp.err).toBe(undefined);
@@ -57,23 +61,29 @@ test('Passing a StandardPromise into another StandardPromise returns the origina
 	expect(sp3.data).toBe('testing');
 	expect(sp4.err).toBe(undefined);
 	expect(sp4.data).toBe('testing');
+	expect(sp5.err).toBe(undefined);
+	expect(sp5.data).toBe('testing');
 });
 
 test('Same as above but reject the promises', async() => {
 	// Setup
 	var p = new Promise(async(resolve, reject) => {
-		setTimeout(() => {reject('testing')}, 5);
+		setTimeout(() => {reject('testing')}, 1);
 	});
 	var p2 = new Promise(async(resolve, reject) => {
-		setTimeout(() => {reject('testing')}, 5);
+		setTimeout(() => {reject('testing')}, 1);
+	});
+	var p3 = new Promise(async(resolve, reject) => {
+		setTimeout(() => {reject('testing')}, 1);
 	});
 
 	// Execute
 	var sp = await _( await _(p) );
-	
-	var sp2 = await _(p2);
-	var sp3 = await _(sp2);
+	var sp2 = await _( _(p2) );
+
+	var sp3 = await _(p3);
 	var sp4 = await _(sp3);
+	var sp5 = _(sp4);
 
 	// Test
 	expect(sp.err).toBe('testing');
@@ -84,15 +94,17 @@ test('Same as above but reject the promises', async() => {
 	expect(sp3.data).toBe(undefined);
 	expect(sp4.err).toBe('testing');
 	expect(sp4.data).toBe(undefined);
+	expect(sp5.err).toBe('testing');
+	expect(sp5.data).toBe(undefined);
 });
 
 test('Resolving a StandardPromise with undefined value stores 204 StandardError in err attribute', async() => {
 	// Setup
 	var p = new Promise(async(resolve, reject) => {
-		setTimeout(() => {resolve()}, 5);
+		setTimeout(() => {resolve()}, 1);
 	});
 	var p2 = new Promise(async(resolve, reject) => {
-		setTimeout(() => {resolve(undefined)}, 5);
+		setTimeout(() => {resolve(undefined)}, 1);
 	});
 
 	// Execute
@@ -109,10 +121,10 @@ test('Resolving a StandardPromise with undefined value stores 204 StandardError 
 test('Rejecting a StandardPromise with undefined value stores StandardPromise_502 StandardError in err attribute', async() => {
 	// Setup
 	var p = new Promise(async(resolve, reject) => {
-		setTimeout(() => {reject()}, 5);
+		setTimeout(() => {reject()}, 1);
 	});
 	var p2 = new Promise(async(resolve, reject) => {
-		setTimeout(() => {reject(undefined)}, 5);
+		setTimeout(() => {reject(undefined)}, 1);
 	});
 
 	// Execute
@@ -129,10 +141,10 @@ test('Rejecting a StandardPromise with undefined value stores StandardPromise_50
 test('Can resolve or reject a StandardPromise with null', async() => {
 	// Setup
 	var p = new Promise(async(resolve, reject) => {
-		setTimeout(() => {resolve(null)}, 5);
+		setTimeout(() => {resolve(null)}, 1);
 	});
 	var p2 = new Promise(async(resolve, reject) => {
-		setTimeout(() => {reject(null)}, 5);
+		setTimeout(() => {reject(null)}, 1);
 	});
 
 	// Execute
@@ -152,7 +164,7 @@ test('Error thrown during promise resolution results in CBLogger.error output an
 
 	var mockedError = new Error();
 	var p = new Promise(async(resolve, reject) => {
-		setTimeout(() => {resolve(null)}, 5);
+		setTimeout(() => {resolve(null)}, 1);
 	});
 	p.then = () => {throw mockedError};
 
