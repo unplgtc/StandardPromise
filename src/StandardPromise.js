@@ -8,19 +8,26 @@ const StandardPromise = {
 		return {
 			err: err,
 			data: data,
-			get isSP() {
+			get isStandardPromise() {
 				return true;
 			}
 		}
+	},
+
+	isSP(object) {
+		return !!(object && typeof object == 'object' && object.isStandardPromise === true);
 	}
 }
 
 const promisify = function(promise) {
-	if (promise.isSP) {
+	if (StandardPromise.isSP(promise)) {
 		return promise;
 	}
 	try {
 		return promise.then((data) => {
+			if (StandardPromise.isSP(data)) {
+				return data;
+			}
 			return data !== undefined
 			            ? StandardPromise.build(undefined, data)
 			            : StandardPromise.build(StandardError[204]);
