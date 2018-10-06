@@ -28,16 +28,14 @@ const promisify = function(promise) {
 			if (StandardPromise.isSP(data)) {
 				return data;
 			}
-			return data !== undefined
-			            ? StandardPromise.build(undefined, data)
-			            : StandardPromise.build(StandardError[204]);
+			return StandardPromise.build(undefined, data);
 		}).catch((err) => {
 			return Promise.resolve(
 				err !== undefined
 				    ? StandardPromise.build(err)
 				    : StandardPromise.build(StandardError.StandardPromise_502)
 			);
-		});;
+		});
 	} catch(err) {
 		CBLogger.error('promise_resolution_error', {message: 'Unexpected error thrown while trying to resolve a Promise in StandardPromise'}, {}, err);
 		return Promise.resolve(StandardPromise.build(err));

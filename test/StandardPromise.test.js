@@ -98,7 +98,7 @@ test('Same as above but reject the promises', async() => {
 	expect(sp5.data).toBe(undefined);
 });
 
-test('Resolving a StandardPromise with undefined value stores 204 StandardError in err attribute', async() => {
+test('Can resolve a StandardPromise with undefined', async() => {
 	// Setup
 	var p = new Promise(async(resolve, reject) => {
 		setTimeout(() => {resolve()}, 1);
@@ -112,9 +112,9 @@ test('Resolving a StandardPromise with undefined value stores 204 StandardError 
 	var sp2 = await _(p2);
 
 	// Test
-	expect(sp.err).toBe(StandardError[204]);
+	expect(sp.err).toBe(undefined);
 	expect(sp.data).toBe(undefined);
-	expect(sp2.err).toBe(StandardError[204]);
+	expect(sp2.err).toBe(undefined);
 	expect(sp2.data).toBe(undefined);
 });
 
