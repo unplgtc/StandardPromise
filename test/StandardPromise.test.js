@@ -158,7 +158,7 @@ test('Can resolve or reject a StandardPromise with null', async() => {
 	expect(sp2.data).toBe(undefined);
 });
 
-test('Error thrown during promise resolution results in CBLogger.error output and return of the thrown error', async() => {
+test('Error thrown during promise resolution results in CBLogger.error output custom 500 StandardError response', async() => {
 	// Setup
 	CBLogger.error = jest.fn();
 
@@ -172,7 +172,7 @@ test('Error thrown during promise resolution results in CBLogger.error output an
 	var sp = await _(p);
 
 	// Test
-	expect(CBLogger.error).toHaveBeenCalledWith('promise_resolution_error', {message: 'Unexpected error thrown while trying to resolve a Promise in StandardPromise'}, {}, mockedError);
-	expect(sp.err).toBe(mockedError);
+	expect(CBLogger.error).toHaveBeenCalledWith('promise_resolution_error', StandardError.StandardPromise_500, {}, mockedError);
+	expect(sp.err).toEqual({...StandardError.StandardPromise_500, err: mockedError});
 	expect(sp.data).toBe(undefined);
 });

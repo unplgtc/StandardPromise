@@ -37,12 +37,13 @@ const promisify = function(promise) {
 			);
 		});
 	} catch(err) {
-		CBLogger.error('promise_resolution_error', {message: 'Unexpected error thrown while trying to resolve a Promise in StandardPromise'}, {}, err);
-		return Promise.resolve(StandardPromise.build(err));
+		CBLogger.error('promise_resolution_error', StandardError.StandardPromise_500, {}, err);
+		return Promise.resolve(StandardPromise.build({...StandardError.StandardPromise_500, err: err}));
 	}
 }
 
 StandardError.add([
+	{code: 'StandardPromise_500', domain: 'StandardPromise', title: 'Unexpected Error', message: 'Unexpected error thrown attempting to resolve promise'},
 	{code: 'StandardPromise_502', domain: 'StandardPromise', title: 'Bad Gateway', message: 'The promise was rejected with an undefined error from an upstream service'}
 ]);
 
