@@ -4,41 +4,64 @@ const StandardError = require('@unplgtc/standard-error');
 const CBLogger = require('@unplgtc/cblogger');
 
 const StandardPromise = {
-	build(err, data) {
-		return {
-			err: err,
-			data: data,
-			get isStandardPromise() {
-				return true;
-			}
-		}
+	get isStandardPromise() {
+		return true;
 	},
 
-	isSP(object) {
-		return !!(object && typeof object == 'object' && object.isStandardPromise === true);
+	build(err, data) {
+		this.err = err;
+		this.data = data;
+		return this;
+	},
+
+	normalize() {
+		this.then = function(onFulfilled, onRejected) {
+			if (this.err === undefined) {
+				onFulfilled(this.data);
+			} else {
+				onRejected(this.err);
+			}
+		}
+		return this;
 	}
 }
 
-const promisify = function(promise) {
-	if (StandardPromise.isSP(promise)) {
-		return promise;
+function isStandardPromise(object) {
+	return !!(object && typeof object === 'object' && object.isStandardPromise);
+}
+
+function promisify(promise, normalize) {
+	if (isStandardPromise(promise)) {
+		return normalize ? promise.normalize() : promise;
 	}
 	try {
 		return promise.then((data) => {
-			if (StandardPromise.isSP(data)) {
-				return data;
+			if (isStandardPromise(data)) {
+				return normalize ? data.normalize() : data;
 			}
-			return StandardPromise.build(undefined, data);
+			var sp = Object.create(StandardPromise);
+			if (normalize) {
+				sp.normalize();
+			}
+			return sp.build(undefined, data);
 		}).catch((err) => {
+			var sp = Object.create(StandardPromise);
+			if (normalize) {
+				sp.normalize();
+			}
 			return Promise.resolve(
 				err !== undefined
-				    ? StandardPromise.build(err)
-				    : StandardPromise.build(StandardError.StandardPromise_502)
+				    ? sp.build(err)
+				    : sp.build(StandardError.StandardPromise_502)
 			);
 		});
 	} catch(err) {
 		CBLogger.error('promise_resolution_error', StandardError.StandardPromise_500, {}, err);
-		return Promise.resolve(StandardPromise.build({...StandardError.StandardPromise_500, err: err}));
+		var sp = Object.create(StandardPromise);
+		if (normalize) {
+			sp.normalize();
+		}
+		return Promise.resolve(sp.build({...StandardError.StandardPromise_500, err: err}));
 	}
 }
 

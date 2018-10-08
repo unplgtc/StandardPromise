@@ -1,6 +1,6 @@
 {
   "name": "@unplgtc/standard-promise",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Standardize Node Promise return values",
   "main": "src/StandardPromise.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "jest": "^23.4.2"
   },
   "dependencies": {
-    "@unplgtc/cblogger": "0.1.0",
+    "@unplgtc/cblogger": "0.1.1",
     "@unplgtc/standard-error": "0.1.0",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5"
