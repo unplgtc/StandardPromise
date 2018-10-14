@@ -52,16 +52,16 @@ function promisify(promise, normalize) {
 			return Promise.resolve(
 				err !== undefined
 				    ? sp.build(err)
-				    : sp.build(StandardError.StandardPromise_502)
+				    : sp.build(StandardError.StandardPromise_502())
 			);
 		});
 	} catch(err) {
-		CBLogger.error('promise_resolution_error', StandardError.StandardPromise_500, {}, err);
+		CBLogger.error('promise_resolution_error', StandardError.StandardPromise_500(), {}, err);
 		var sp = Object.create(StandardPromise);
 		if (normalize) {
 			sp.normalize();
 		}
-		return Promise.resolve(sp.build({...StandardError.StandardPromise_500, err: err}));
+		return Promise.resolve(sp.build(StandardError.StandardPromise_500(err)));
 	}
 }
 

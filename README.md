@@ -68,7 +68,7 @@ If you don't know what other functions might be calling your function, we recomm
 
 In general, we've found that if your function is returning a StandardPromise then it often might not need to be unwrapping the Promise at all. The best practice we recommend is to think carefully about your code and only wrap a Promise into a StandardPromise when you absolutely need to. If there's only a single Promise being awaited in your function, you may be ableto get away with a simple `.catch()` statement following your `await` line, which is going to be lighter weight and slightly faster than wrapping into a StandardPromise. In the last example above, the StandardPromise wrapping is almost definitely not necessary — just return the Promise without wrapping and normalizing it.
 
-StandardPromise excels in situations where you are awaiting multiple functions, and particularly when those awaited values depend on each other so that there is an order that needs to be enforced. These complex situations are what lead to complicated chains and confusing nesting when using normal Promises. StandardPromise will keep your code flat and your logic safe and simple.
+StandardPromise excels in situations where you are awaiting multiple functions, and particularly when those awaited values depend on each other so that there is an order that needs to be enforced. These complex situations are what lead to confusing chains and ugly nesting when using normal Promises. StandardPromise will keep your code flat and your logic safe and simple.
 
 ## StandardPromise in Practice
 
