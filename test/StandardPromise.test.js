@@ -108,9 +108,9 @@ test('Rejecting a StandardPromise with undefined value stores StandardPromise_50
 	var sp2 = await _(p2);
 
 	// Test
-	expect(sp.err).toBe(StandardError.StandardPromise_502);
+	expect(sp.err).toEqual(StandardError.StandardPromise_502());
 	expect(sp.data).toBe(undefined);
-	expect(sp2.err).toBe(StandardError.StandardPromise_502);
+	expect(sp2.err).toEqual(StandardError.StandardPromise_502());
 	expect(sp2.data).toBe(undefined);
 });
 
@@ -142,8 +142,8 @@ test('Error thrown during promise resolution results in CBLogger.error output cu
 	var sp = await _(p);
 
 	// Test
-	expect(CBLogger.error).toHaveBeenCalledWith('promise_resolution_error', StandardError.StandardPromise_500, {}, mockedError);
-	expect(sp.err).toEqual({...StandardError.StandardPromise_500, err: mockedError});
+	expect(CBLogger.error).toHaveBeenCalledWith('promise_resolution_error', StandardError.StandardPromise_500(), {}, mockedError);
+	expect(sp.err).toEqual(StandardError.StandardPromise_500(mockedError));
 	expect(sp.data).toBe(undefined);
 });
 
