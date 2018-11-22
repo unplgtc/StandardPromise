@@ -1,6 +1,6 @@
 {
   "name": "@unplgtc/standard-promise",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Promise wrapper to simplify asyncronous error handling in Node applications",
   "main": "src/StandardPromise.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "jest": "^23.4.2"
   },
   "dependencies": {
-    "@unplgtc/cblogger": "1.0.0",
+    "@unplgtc/cblogger": "1.0.2",
     "@unplgtc/standard-error": "1.0.0",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5"
